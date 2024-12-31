@@ -41,6 +41,17 @@ void f3_ref(T& param)
 }
 #pragma endregion
 
+template<typename T>
+void f4(initializer_list<T> param)
+{
+
+}
+
+auto f4_auto()
+{
+	// return { 1, 2, 3 };		컴파일 에러
+}
+
 int main()
 {
 	int x1 = 27;
@@ -75,5 +86,21 @@ int main()
 	f3(name);			// T와 ParamType이 모두 const char*
 	f3_ref(name);		// T는 const char[3], ParamType은 const char (&)[3]
 
+	auto ax1 = 27;		// ax1은 int
+	auto ax2(27);		// ax2는 int
+	auto ax3 = { 27 };	// ax3는 std::initializer_list<int>
+	auto ax4{ 27 };		// ax4는 std::initializer_list<int>
+
+	// auto ax5 = { 1, 2, 3.0 };	컴파일 에러
+	// f3({ 1, 2, 3 });				컴파일 에러 -> 템플릿에는 중괄호 초기치를 처리할 별도의 규칙이 없음
+	f4({ 1, 2, 3 });
+	
+	int dx = 5;
+	decltype(dx) dx1 = dx;			// dx1의 타입은 int
+	decltype((dx)) dx2 = dx;		// dx2의 타입은 int&
+	dx2 = 3;
+	cout << dx << '\n';				// 3이 출력된다
+
+	
 	return 0;
 }
